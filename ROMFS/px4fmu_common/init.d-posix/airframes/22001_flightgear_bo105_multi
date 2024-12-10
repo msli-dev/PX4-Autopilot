@@ -26,6 +26,6 @@ param set-default CA_SP0_ANG1 180
 param set-default CA_SP0_ANG2 300
 param set-default PWM_MAIN_FUNC1 101 # main motor
 param set-default PWM_MAIN_FUNC2 201
-param set-default PWM_MAIN_FUNC3 202 # servo
+param set-default PWM_MAIN_FUNC3 202
 param set-default PWM_MAIN_FUNC4 203
 param set-default PWM_MAIN_FUNC5 204

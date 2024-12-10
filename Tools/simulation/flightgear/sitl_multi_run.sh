@@ -1,4 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/bash
+
+#developement/testing version for running multiple instancees of PX4 one by one
 
 set -e
 
@@ -19,7 +21,15 @@ echo model: $model
 echo src_path: $src_path
 echo build_path: $build_path
 
-rootfs="$build_path/rootfs" # this is the working directory
+if [ -z "$PX4_ID" ];
+then
+    PX4_ID=0
+fi
+echo "========================"
+echo $PX4_ID
+echo "========================"
+
+rootfs="$build_path/rootfs_"$PX4_ID # this is the working directory
 mkdir -p "$rootfs"
 
 export PX4_SIM_MODEL=flightgear_${model}
@@ -27,20 +37,19 @@ export PX4_SIM_MODEL=flightgear_${model}
 echo "FG setup"
 cd "${src_path}/Tools/simulation/flightgear/flightgear_bridge/"
 # 运行fg 并写入模型参数、创建通信协议
-./FG_run.py models/${model}.json 0
+./FG_run.py models/${model}.json $PX4_ID
+"${build_path}/build_flightgear_bridge/flightgear_bridge" $PX4_ID `./get_FGbridge_params.py "models/"${model}".json"` &
+FG_BRIDGE_PID=`echo $!`
 
-# 运行fg bridge 并传入参数
-# 参数1：0
-# 参数2：文件执行结果 控制通道数量以及控制通道
-"${build_path}/build_flightgear_bridge/flightgear_bridge" 0 `./get_FGbridge_params.py "models/"${model}".json"` &
-FG_BRIDGE_PID=$!
+
 
 pushd "$rootfs" >/dev/null
 
 # Do not exit on failure now from here on because we want the complete cleanup
 set +e
 
-sitl_command="\"$sitl_bin\" \"$build_path\"/etc"
+
+sitl_command="\"$sitl_bin\" -i $PX4_ID \"$build_path\"/etc"
 
 echo SITL COMMAND: $sitl_command
 
@@ -49,4 +58,4 @@ eval $sitl_command
 popd >/dev/null
 
 kill $FG_BRIDGE_PID
-kill -9 `cat /tmp/px4fgfspid_0`
+kill -9 `cat /tmp/px4fgfspid_${PX4_ID}`
