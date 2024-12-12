@@ -27,7 +27,6 @@ if(ENABLE_LOCKSTEP_SCHEDULER STREQUAL "no")
 			tf-g2
 			tf-r1
 			bo105
-			bo105_multi
 		)
 
 		# find corresponding airframes
@@ -74,22 +73,14 @@ if(ENABLE_LOCKSTEP_SCHEDULER STREQUAL "no")
 			else()
 				message(WARNING "flightgear missing model: ${model} (${airframe_model_only}), airframe: ${flightgear_airframe_found}, SYS_AUTOSTART: ${airframe_sys_autostart}")
 			endif()
-                         # 检查是否为 bo105_multi，使用 sitl_multi_run.sh
-			if(model STREQUAL "bo105_multi")
-				add_custom_target(flightgear_${model}
-					COMMAND ${PX4_SOURCE_DIR}/Tools/simulation/flightgear/sitl_multi_run.sh $<TARGET_FILE:px4> bo105 ${PX4_SOURCE_DIR} ${PX4_BINARY_DIR}
-					WORKING_DIRECTORY ${SITL_WORKING_DIR}
-					USES_TERMINAL
-					DEPENDS px4 flightgear_bridge
-				)
-			else()
-				add_custom_target(flightgear_${model}
-					COMMAND ${PX4_SOURCE_DIR}/Tools/simulation/flightgear/sitl_run.sh $<TARGET_FILE:px4> ${model} ${PX4_SOURCE_DIR} ${PX4_BINARY_DIR}
-					WORKING_DIRECTORY ${SITL_WORKING_DIR}
-					USES_TERMINAL
-					DEPENDS px4 flightgear_bridge
-				)
-			endif()
+
+			add_custom_target(flightgear_${model}
+				COMMAND ${PX4_SOURCE_DIR}/Tools/simulation/flightgear/sitl_multi_run.sh $<TARGET_FILE:px4> ${model} ${PX4_SOURCE_DIR} ${PX4_BINARY_DIR}
+				WORKING_DIRECTORY ${SITL_WORKING_DIR}
+				USES_TERMINAL
+				DEPENDS px4 flightgear_bridge
+			)
+
 		endforeach()
 	endif()
 endif()
