@@ -667,6 +667,10 @@ ControlAllocator::publish_actuator_controls()
 
 	actuator_motors.reversible_flags = _param_r_rev.get();
 
+	if (_manual_control_setpoint_sub.update(&_joystick_setpoint)){
+		_buttons=_joystick_setpoint.buttons;
+	}
+
 	int actuator_idx = 0;
 	int actuator_idx_matrix[ActuatorEffectiveness::MAX_NUM_MATRICES] {};
 
@@ -679,6 +683,10 @@ ControlAllocator::publish_actuator_controls()
 		int selected_matrix = _control_allocation_selection_indexes[actuator_idx];
 		float actuator_sp = _control_allocation[selected_matrix]->getActuatorSetpoint()(actuator_idx_matrix[selected_matrix]);
 		actuator_motors.control[motors_idx] = PX4_ISFINITE(actuator_sp) ? actuator_sp : NAN;
+
+		if((_buttons==4)&&(motors_idx==_motor_id)){
+			actuator_motors.control[motors_idx]=actuator_motors.control[motors_idx]-_fault_add;
+		}
 
 		if (stopped_motors & (1u << motors_idx)) {
 			actuator_motors.control[motors_idx] = NAN;
