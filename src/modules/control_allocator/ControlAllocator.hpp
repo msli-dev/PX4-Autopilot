@@ -216,7 +216,7 @@ private:
 	manual_control_setpoint_s _joystick_setpoint;
 	int _buttons;
 	float _fault_ratio=0.8f;
-	int _motor_id=1;
+	int _servos_id=0; /*尾伺服 标号0*/
 	float _fault_add=0.1f;
 	/* -------- */
 

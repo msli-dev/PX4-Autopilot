@@ -684,10 +684,6 @@ ControlAllocator::publish_actuator_controls()
 		float actuator_sp = _control_allocation[selected_matrix]->getActuatorSetpoint()(actuator_idx_matrix[selected_matrix]);
 		actuator_motors.control[motors_idx] = PX4_ISFINITE(actuator_sp) ? actuator_sp : NAN;
 
-		if((_buttons==4)&&(motors_idx==_motor_id)){
-			actuator_motors.control[motors_idx]=actuator_motors.control[motors_idx]-_fault_add;
-		}
-
 		if (stopped_motors & (1u << motors_idx)) {
 			actuator_motors.control[motors_idx] = NAN;
 		}
@@ -710,6 +706,9 @@ ControlAllocator::publish_actuator_controls()
 			int selected_matrix = _control_allocation_selection_indexes[actuator_idx];
 			float actuator_sp = _control_allocation[selected_matrix]->getActuatorSetpoint()(actuator_idx_matrix[selected_matrix]);
 			actuator_servos.control[servos_idx] = PX4_ISFINITE(actuator_sp) ? actuator_sp : NAN;
+			if((_buttons==4)&&(servos_idx==_servos_id)){
+				actuator_motors.control[motors_idx]=actuator_motors.control[motors_idx]-_fault_add;
+			}
 			++actuator_idx_matrix[selected_matrix];
 			++actuator_idx;
 		}
