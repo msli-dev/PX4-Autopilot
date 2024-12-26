@@ -1,6 +1,6 @@
 uint64 timestamp					# time since system start (microseconds)
 
-float32 x1
+float32 y
 float32 z1
 float32 z2
 float32 z3

@@ -108,6 +108,7 @@ private:
 	uORB::Publication<vehicle_rates_setpoint_s>	_vehicle_rates_setpoint_pub{ORB_ID(vehicle_rates_setpoint)};
 	uORB::Publication<vehicle_torque_setpoint_s>	_vehicle_torque_setpoint_pub;
 	uORB::Publication<vehicle_thrust_setpoint_s>	_vehicle_thrust_setpoint_pub;
+	uORB::Publication<eso_s> _eso_status_pub{ORB_ID(eso)}; /* eso 话题发布*/
 
 	vehicle_control_mode_s	_vehicle_control_mode{};
 	vehicle_status_s	_vehicle_status{};
@@ -159,6 +160,10 @@ private:
 		(ParamFloat<px4::params::MC_ACRO_SUPEXPO>) _param_mc_acro_supexpo,		/**< superexpo stick curve shape (roll & pitch) */
 		(ParamFloat<px4::params::MC_ACRO_SUPEXPOY>) _param_mc_acro_supexpoy,		/**< superexpo stick curve shape (yaw) */
 
-		(ParamBool<px4::params::MC_BAT_SCALE_EN>) _param_mc_bat_scale_en
+		(ParamBool<px4::params::MC_BAT_SCALE_EN>) _param_mc_bat_scale_en,
+
+		(ParamFloat<px4::params::ADRC_Y_DMAX>) _param_adrc_yaw_disturb_max,     /* eso 参数*/
+		(ParamFloat<px4::params::ADRC_Y_ESO_GAIN>) _param_adrc_yaw_eso_gain,
+		(ParamFloat<px4::params::ADRC_Y_ESO_BW>) _param_adrc_yaw_eso_bw
 	)
 };

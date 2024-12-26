@@ -292,3 +292,47 @@ PARAM_DEFINE_FLOAT(MC_YAWRATE_K, 1.0f);
  * @group Multicopter Rate Control
  */
 PARAM_DEFINE_INT32(MC_BAT_SCALE_EN, 0);
+
+
+/**
+ * ADRC disturb max amplitude for yaw
+ *
+ * @min 0.0
+ * @max 0.5
+ * @decimal 2
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_Y_DMAX, 0.2);
+
+
+/**
+ * ADRC disturb gain for yaw
+ *
+ * @min 0.0
+ * @max 1.0
+ * @decimal 2
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_Y_DGAIN, 1.0);
+
+
+/**
+ * ADRC ESO gain for yaw
+ *
+ * @min 1
+ * @max 1e6
+ * @decimal 0
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_Y_ESO_GAIN, 3e3);
+
+/**
+ * ADRC ESO bandwidth for yaw
+ *
+ * @unit rad/s
+ * @min 1
+ * @max 100
+ * @decimal 0
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_FLOAT(ADRC_Y_ESO_BW, 20);

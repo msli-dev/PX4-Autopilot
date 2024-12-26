@@ -95,6 +95,10 @@ MulticopterRateControl::parameters_updated()
 	// manual rate control acro mode rate limits
 	_acro_rate_max = Vector3f(radians(_param_mc_acro_r_max.get()), radians(_param_mc_acro_p_max.get()),
 				  radians(_param_mc_acro_y_max.get()));
+
+	// eso 参数
+	_rate_control.eso.set_disturb_limit(-_param_adrc_yaw_disturb_max.get(), _param_adrc_yaw_disturb_max.get());
+	_rate_control.eso.set_eso_gain_cutoff_frequency(_param_adrc_yaw_eso_gain.get(), _param_adrc_yaw_eso_bw.get());
 }
 
 void
@@ -216,11 +220,19 @@ MulticopterRateControl::Run()
 			// run rate controller
 			const Vector3f att_control = _rate_control.update(rates, _rates_setpoint, angular_accel, dt, _maybe_landed || _landed);
 
+
 			// publish rate controller status
 			rate_ctrl_status_s rate_ctrl_status{};
 			_rate_control.getRateControlStatus(rate_ctrl_status);
 			rate_ctrl_status.timestamp = hrt_absolute_time();
 			_controller_status_pub.publish(rate_ctrl_status);
+
+			// 发布eso 状态
+			eso_s eso_status{};
+			_rate_control.eso.record_eso_status(eso_status);
+			eso_status.timestamp= hrt_absolute_time();
+			_eso_status_pub.publish(eso_status);
+
 
 			// publish thrust and torque setpoints
 			vehicle_thrust_setpoint_s vehicle_thrust_setpoint{};
