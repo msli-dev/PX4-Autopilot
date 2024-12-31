@@ -707,7 +707,9 @@ ControlAllocator::publish_actuator_controls()
 			float actuator_sp = _control_allocation[selected_matrix]->getActuatorSetpoint()(actuator_idx_matrix[selected_matrix]);
 			actuator_servos.control[servos_idx] = PX4_ISFINITE(actuator_sp) ? actuator_sp : NAN;
 			if((_buttons==4)&&(servos_idx==_servos_id)){
-				actuator_motors.control[motors_idx]=actuator_motors.control[motors_idx]-_fault_add;
+				actuator_servos.control[servos_idx]=actuator_servos.control[servos_idx]-_fault_add;
+			}else if((_buttons==2)&&(servos_idx==_servos_id)){
+				actuator_servos.control[servos_idx]=_fault_ratio*actuator_servos.control[servos_idx];
 			}
 			++actuator_idx_matrix[selected_matrix];
 			++actuator_idx;

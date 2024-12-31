@@ -215,7 +215,7 @@ private:
 	/* 故障注入 */
 	manual_control_setpoint_s _joystick_setpoint;
 	int _buttons;
-	float _fault_ratio=0.8f;
+	float _fault_ratio=0.9f;
 	int _servos_id=0; /*尾伺服 标号0*/
 	float _fault_add=0.1f;
 	/* -------- */
