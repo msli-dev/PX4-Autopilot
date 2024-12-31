@@ -115,6 +115,7 @@ private:
 
 	bool _landed{true};
 	bool _maybe_landed{true};
+	bool _mc_rate_method{false}; /* 是否使能ESO */
 
 	hrt_abstime _last_run{0};
 
@@ -164,6 +165,7 @@ private:
 
 		(ParamFloat<px4::params::ADRC_Y_DMAX>) _param_adrc_yaw_disturb_max,     /* eso 参数*/
 		(ParamFloat<px4::params::ADRC_Y_ESO_GAIN>) _param_adrc_yaw_eso_gain,
-		(ParamFloat<px4::params::ADRC_Y_ESO_BW>) _param_adrc_yaw_eso_bw
+		(ParamFloat<px4::params::ADRC_Y_ESO_BW>) _param_adrc_yaw_eso_bw,
+		(ParamBool<px4::params::MC_RATE_METHOD>) _param_mc_rate_method
 	)
 };

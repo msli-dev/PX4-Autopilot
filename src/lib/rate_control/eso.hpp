@@ -17,13 +17,25 @@ public:
 	ExtendedStateObserver() {};
 	~ExtendedStateObserver() {};
 
+	/**
+	 * 设置扩展状态观测器参数
+	 * @param b0 控制输入增益
+	 * @param beta01 观测量z1增益
+	 * @param beta02 观测量z2增益
+	 * @param beta03 观测量z3（扰动量）增益
+	 */
 	void set_eso_coef(const float b0, const float beta01, const float beta02, const float beta03);
 
 	void set_eso_gain_cutoff_frequency(const float b0, const float wc);
 
 	void set_disturb_limit(const float dmin, const float dmax);
 
-
+	/**
+	 * 观测器公式
+	 * @param u 控制输入
+	 * @param y_ 被观测量
+	 * @param dt 时间差
+	 */
 	void update(const float u, const float y_, const float dt);
 
 	float get_eso_reference(void)

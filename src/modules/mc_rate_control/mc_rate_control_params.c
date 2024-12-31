@@ -295,6 +295,16 @@ PARAM_DEFINE_INT32(MC_BAT_SCALE_EN, 0);
 
 
 /**
+ * Rate control method
+ *
+ * Value 0 PID(default) value 1 ESO
+ *
+ * @boolean
+ * @group Multicopter ADRC Control
+ */
+PARAM_DEFINE_INT32(MC_RATE_METHOD, 0);
+
+/**
  * ADRC disturb max amplitude for yaw
  *
  * @min 0.0

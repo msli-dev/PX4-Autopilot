@@ -97,6 +97,16 @@ public:
 	matrix::Vector3f update(const matrix::Vector3f &rate, const matrix::Vector3f &rate_sp,
 				const matrix::Vector3f &angular_accel, const float dt, const bool landed);
 
+	/**
+	 * Run one control loop cycle calculation
+	 * @param rate estimation of the current vehicle angular rate
+	 * @param rate_sp desired vehicle angular rate setpoint
+	 * @param dt desired vehicle angular rate setpoint
+	 * @return [-1,1] normalized torque vector to apply to the vehicle
+	 */
+	matrix::Vector3f update(const matrix::Vector3f &rate, const matrix::Vector3f &rate_sp,
+				const matrix::Vector3f &angular_accel, const float dt, const bool landed,const bool method);
+
 	ExtendedStateObserver eso;
 
 	/**

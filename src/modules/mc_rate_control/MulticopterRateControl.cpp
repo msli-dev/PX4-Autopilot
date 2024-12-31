@@ -99,6 +99,7 @@ MulticopterRateControl::parameters_updated()
 	// eso 参数
 	_rate_control.eso.set_disturb_limit(-_param_adrc_yaw_disturb_max.get(), _param_adrc_yaw_disturb_max.get());
 	_rate_control.eso.set_eso_gain_cutoff_frequency(_param_adrc_yaw_eso_gain.get(), _param_adrc_yaw_eso_bw.get());
+	_mc_rate_method = _param_mc_rate_method.get();
 }
 
 void
@@ -218,7 +219,7 @@ MulticopterRateControl::Run()
 			}
 
 			// run rate controller
-			const Vector3f att_control = _rate_control.update(rates, _rates_setpoint, angular_accel, dt, _maybe_landed || _landed);
+			const Vector3f att_control = _rate_control.update(rates, _rates_setpoint, angular_accel, dt, _maybe_landed || _landed,_mc_rate_method);
 
 
 			// publish rate controller status
@@ -227,7 +228,7 @@ MulticopterRateControl::Run()
 			rate_ctrl_status.timestamp = hrt_absolute_time();
 			_controller_status_pub.publish(rate_ctrl_status);
 
-			// 发布eso 状态
+			// 发布 eso 观测状态
 			eso_s eso_status{};
 			_rate_control.eso.record_eso_status(eso_status);
 			eso_status.timestamp= hrt_absolute_time();
