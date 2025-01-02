@@ -30,6 +30,8 @@ public:
 
 	void set_disturb_limit(const float dmin, const float dmax);
 
+	void set_disturb_gain(const float dis_gain);
+
 	/**
 	 * 观测器公式
 	 * @param u 控制输入
@@ -71,6 +73,7 @@ private:
 	float z3 = 0.0f;
 	float distrub = 0.0f;
 
+	float _disturb_gain = 0.0f;
 	float _disturb_min = 0.0f;
 	float _disturb_max = 0.0f;
 

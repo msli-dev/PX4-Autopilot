@@ -166,6 +166,7 @@ private:
 		(ParamFloat<px4::params::ADRC_Y_DMAX>) _param_adrc_yaw_disturb_max,     /* eso 参数*/
 		(ParamFloat<px4::params::ADRC_Y_ESO_GAIN>) _param_adrc_yaw_eso_gain,
 		(ParamFloat<px4::params::ADRC_Y_ESO_BW>) _param_adrc_yaw_eso_bw,
-		(ParamBool<px4::params::MC_RATE_METHOD>) _param_mc_rate_method
+		(ParamBool<px4::params::MC_RATE_METHOD>) _param_mc_rate_method,
+		(ParamFloat<px4::params::ADRC_Y_DGAIN>) _param_adrc_yaw_disturb_gain
 	)
 };

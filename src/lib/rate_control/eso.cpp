@@ -22,6 +22,12 @@ void ExtendedStateObserver::set_disturb_limit(const float dmin, const float dmax
 	_disturb_max = dmax;
 }
 
+void ExtendedStateObserver::set_disturb_gain(const float dis_gain)
+{
+	_disturb_gain= dis_gain;
+
+}
+
 void ExtendedStateObserver::update(const float u, const float y_, const float dt)
 {
 	y = y_;
@@ -30,7 +36,7 @@ void ExtendedStateObserver::update(const float u, const float y_, const float dt
 	z2 += dt * (z3 + _b0 * u - _beta02 * ey);
 	z3 += dt * (-_beta03 * ey);
 
-	distrub = -z3 / _b0;
+	distrub = (-z3 / _b0)*_disturb_gain;
 	distrub = math::constrain(distrub, _disturb_min, _disturb_max);
 }
 

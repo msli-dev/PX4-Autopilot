@@ -94,8 +94,8 @@ Vector3f RateControl::update(const Vector3f &rate, const Vector3f &rate_sp, cons
 	// PID control with feed forward
 	Vector3f torque_temp = _gain_p.emult(rate_error) + _rate_int - _gain_d.emult(angular_accel) + _gain_ff.emult(rate_sp);
 
+	eso.update(torque_temp(2),rate(2),dt);
 	if(method){
-		eso.update(torque_temp(2),rate(2),dt);
 		torque_temp(2) += eso.get_eso_disturb();
 	}
 
