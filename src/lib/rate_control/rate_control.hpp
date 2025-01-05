@@ -43,6 +43,7 @@
 
 #include <mathlib/mathlib.h>
 #include <uORB/topics/rate_ctrl_status.h>
+#include "eso.hpp"
 
 class RateControl
 {
@@ -95,6 +96,8 @@ public:
 	 */
 	matrix::Vector3f update(const matrix::Vector3f &rate, const matrix::Vector3f &rate_sp,
 				const matrix::Vector3f &angular_accel, const float dt, const bool landed);
+
+	ExtendedStateObserver eso;
 
 	/**
 	 * Set the integral term to 0 to prevent windup
