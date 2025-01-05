@@ -85,6 +85,31 @@ Vector3f RateControl::update(const Vector3f &rate, const Vector3f &rate_sp, cons
 	return torque;
 }
 
+Vector3f RateControl::update(const Vector3f &rate, const Vector3f &rate_sp, const Vector3f &angular_accel,
+			     const float dt, const bool landed,const bool method)
+{
+	// angular rates error
+	Vector3f rate_error = rate_sp - rate;
+
+	// PID control with feed forward
+	Vector3f torque_temp = _gain_p.emult(rate_error) + _rate_int - _gain_d.emult(angular_accel) + _gain_ff.emult(rate_sp);
+
+	eso.update(torque_temp(2),rate(2),dt);
+	if(method){
+		torque_temp(2) += eso.get_eso_disturb();
+	}
+
+	const Vector3f torque = torque_temp;
+	// update integral only if we are not landed
+	if (!landed) {
+		updateIntegral(rate_error, dt);
+	}
+
+	if(landed) eso.reset();
+
+	return torque;
+}
+
 void RateControl::updateIntegral(Vector3f &rate_error, const float dt)
 {
 	for (int i = 0; i < 3; i++) {
