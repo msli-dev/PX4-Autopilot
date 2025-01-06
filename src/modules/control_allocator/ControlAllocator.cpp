@@ -667,6 +667,13 @@ ControlAllocator::publish_actuator_controls()
 
 	actuator_motors.reversible_flags = _param_r_rev.get();
 
+	input_rc_s input_rc;
+	if (_input_rc_sub.update(&input_rc)) {
+		if (!input_rc.rc_lost) {
+			_flag=input_rc.values[5];//channel 6 as fault initiate
+		}
+	}
+
 	int actuator_idx = 0;
 	int actuator_idx_matrix[ActuatorEffectiveness::MAX_NUM_MATRICES] {};
 
@@ -679,6 +686,10 @@ ControlAllocator::publish_actuator_controls()
 		int selected_matrix = _control_allocation_selection_indexes[actuator_idx];
 		float actuator_sp = _control_allocation[selected_matrix]->getActuatorSetpoint()(actuator_idx_matrix[selected_matrix]);
 		actuator_motors.control[motors_idx] = PX4_ISFINITE(actuator_sp) ? actuator_sp : NAN;
+
+		if(_flag>=1500&&motors_idx==_motor_id){
+			actuator_motors.control[motors_idx]=actuator_motors.control[motors_idx]-_fault_add;
+		}
 
 		if (stopped_motors & (1u << motors_idx)) {
 			actuator_motors.control[motors_idx] = NAN;
