@@ -82,4 +82,4 @@
 	url = https://gitlab.com/voxl-public/voxl-sdk/core-libs/libfc-sensor-api.git
 [submodule "Tools/simulation/flightgear/flightgear_bridge"]
 	path = Tools/simulation/flightgear/flightgear_bridge
-	url = git@github.com:747640013/PX4-FlightGear-Bridge.git
+	url = https://github.com/747640013/PX4-FlightGear-Bridge.git
