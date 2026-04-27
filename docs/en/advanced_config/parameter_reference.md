@@ -17190,26 +17190,6 @@ Note: this is only useful for servos.
 
 ## Airspeed Validator
 
-### ASPD_BETA_GATE (`INT32`) {#ASPD_BETA_GATE}
-
-Gate size for sideslip angle fusion.
-
-Sets the number of standard deviations used by the innovation consistency test.
-
-| Reboot | minValue | maxValue | increment | default | unit | Read-Only |
-| ------ | -------- | -------- | --------- | ------- | ---- | --------- |
-| &nbsp; | 1        | 5        |           | 1       | SD   | &nbsp;    |
-
-### ASPD_BETA_NOISE (`FLOAT`) {#ASPD_BETA_NOISE}
-
-Wind estimator sideslip measurement noise.
-
-Sideslip measurement noise of the internal wind estimator(s) of the airspeed selector.
-
-| Reboot | minValue | maxValue | increment | default | unit | Read-Only |
-| ------ | -------- | -------- | --------- | ------- | ---- | --------- |
-| &nbsp; | 0        | 1        |           | 0.15    | rad  | &nbsp;    |
-
 ### ASPD_DO_CHECKS (`INT32`) {#ASPD_DO_CHECKS}
 
 Enable checks on airspeed sensors.
@@ -17362,27 +17342,6 @@ Controls when to apply the new estimated airspeed scale(s).
 | Reboot | minValue | maxValue | increment | default | unit | Read-Only |
 | ------ | -------- | -------- | --------- | ------- | ---- | --------- |
 | &nbsp; |          |          |           | 2       |      | &nbsp;    |
-
-### ASPD_SCALE_NSD (`FLOAT`) {#ASPD_SCALE_NSD}
-
-Wind estimator true airspeed scale process noise spectral density.
-
-Airspeed scale process noise of the internal wind estimator(s) of the airspeed selector.
-When unaided, the scale uncertainty (1-sigma, unitless) increases by this amount every second.
-
-| Reboot | minValue | maxValue | increment | default | unit         | Read-Only |
-| ------ | -------- | -------- | --------- | ------- | ------------ | --------- |
-| &nbsp; | 0        | 0.1      |           | 0.0001  | 1/s/sqrt(Hz) | &nbsp;    |
-
-### ASPD_TAS_GATE (`INT32`) {#ASPD_TAS_GATE}
-
-Gate size for true airspeed fusion.
-
-Sets the number of standard deviations used by the innovation consistency test.
-
-| Reboot | minValue | maxValue | increment | default | unit | Read-Only |
-| ------ | -------- | -------- | --------- | ------- | ---- | --------- |
-| &nbsp; | 1        | 5        |           | 4       | SD   | &nbsp;    |
 
 ### ASPD_TAS_NOISE (`FLOAT`) {#ASPD_TAS_NOISE}
 
