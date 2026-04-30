@@ -19117,19 +19117,6 @@ If no local position is available, home is set to the current position.
 | ------ | -------- | -------- | --------- | ------------ | ---- | --------- |
 | &nbsp; |          |          |           | Disabled (0) |      | &nbsp;    |
 
-### COM_LKDOWN_TKO (`FLOAT`) {#COM_LKDOWN_TKO}
-
-Timeout for detecting a failure after takeoff.
-
-A non-zero, positive value specifies the timeframe in seconds within failure detector is allowed to disarm the vehicle
-if attitude exceeds the limits defined in FD_FAIL_P and FD_FAIL_R.
-The check is not executed for flight modes that do support acrobatic maneuvers, e.g: Acro (MC/FW) and Manual (FW).
-A zero or negative value means that the check is disabled.
-
-| Reboot | minValue | maxValue | increment | default | unit | Read-Only |
-| ------ | -------- | -------- | --------- | ------- | ---- | --------- |
-| &nbsp; | -1.0     | 5.0      |           | 3.0     | s    | &nbsp;    |
-
 ### COM_LOW_BAT_ACT (`INT32`) {#COM_LOW_BAT_ACT}
 
 Battery failsafe mode.
