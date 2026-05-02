@@ -369,34 +369,20 @@
 
 /* Alternate function pin selections ************************************************/
 
-#define GPIO_USART1_RX   GPIO_USART1_RX_1    /* PB15 */
-#define GPIO_USART1_TX   GPIO_USART1_TX_1    /* PB14 */
+#define GPIO_USART1_RX   (GPIO_USART1_RX_1 | GPIO_SPEED_100MHz) /* PB15 */
+#define GPIO_USART1_TX   (GPIO_USART1_TX_1 | GPIO_SPEED_100MHz) /* PB14 */
 
-// #define GPIO_USART2_RX   GPIO_USART2_RX_1   /* PA3   */
-// #define GPIO_USART2_TX   GPIO_USART2_TX_2   /* PD5   */
+#define GPIO_UART4_RX    (GPIO_UART4_RX_3 | GPIO_SPEED_100MHz)  /* PB8 */
+#define GPIO_UART4_TX    (GPIO_UART4_TX_3 | GPIO_SPEED_100MHz)  /* PB9 */
 
-// #define GPIO_USART3_RX   GPIO_USART3_RX_3   /* PD9   */
-// #define GPIO_USART3_TX   GPIO_USART3_TX_3   /* PD8   */
+#define GPIO_USART6_RX   (GPIO_USART6_RX_1 | GPIO_SPEED_100MHz) /* PC7 */
+#define GPIO_USART6_TX   (GPIO_USART6_TX_1 | GPIO_SPEED_100MHz) /* PC6 */
 
-#define GPIO_UART4_RX    GPIO_UART4_RX_3    /* PB8  */
-#define GPIO_UART4_TX    GPIO_UART4_TX_3    /* PB9  */
+#define GPIO_UART7_RX    (GPIO_UART7_RX_3 | GPIO_SPEED_100MHz)  /* PE7 */
+#define GPIO_UART7_TX    (GPIO_UART7_TX_3 | GPIO_SPEED_100MHz)  /* PE8 */
 
-// #define GPIO_UART5_RX    GPIO_UART5_RX_3    /* PD2  */
-// #define GPIO_UART5_TX    GPIO_UART5_TX_3    /* PC12 */
-// GPIO_UART5_RTS   no remap                /* PC8  */
-// #undef GPIO_UART5_CTS
-// #define GPIO_UART5_CTS   ((GPIO_ALT|GPIO_AF8|GPIO_PORTC|GPIO_PIN9) | GPIO_PULLDOWN) /* PC9  */
-
-#define GPIO_USART6_RX   GPIO_USART6_RX_1   /* PC7 */
-#define GPIO_USART6_TX   GPIO_USART6_TX_1   /* PC6  */
-
-#define GPIO_UART7_RX    GPIO_UART7_RX_3    /* PE7  */
-#define GPIO_UART7_TX    GPIO_UART7_TX_3    /* PE8  */
-
-
-#define GPIO_UART8_RX    GPIO_UART8_RX_1    /* PE0 */
-#define GPIO_UART8_TX    GPIO_UART8_TX_1    /* PE1 */
-
+#define GPIO_UART8_RX    (GPIO_UART8_RX_1 | GPIO_SPEED_100MHz)  /* PE0 */
+#define GPIO_UART8_TX    (GPIO_UART8_TX_1 | GPIO_SPEED_100MHz)  /* PE1 */
 
 /* CAN
  *
@@ -404,12 +390,11 @@
  * CAN2 is routed to transceiver.
  */
 
+#define GPIO_CAN1_RX     (GPIO_CAN1_RX_3 | GPIO_SPEED_50MHz)    /* PD0 */
+#define GPIO_CAN1_TX     (GPIO_CAN1_TX_3 | GPIO_SPEED_50MHz)    /* PD1 */
 
-#define GPIO_CAN1_RX     GPIO_CAN1_RX_3     /* PD0  */
-#define GPIO_CAN1_TX     GPIO_CAN1_TX_3     /* PD1  */
-#define GPIO_CAN2_RX     GPIO_CAN2_RX_1     /* PB12 */
-#define GPIO_CAN2_TX     GPIO_CAN2_TX_1     /* PB13  */
-
+#define GPIO_CAN2_RX     (GPIO_CAN2_RX_1 | GPIO_SPEED_50MHz)    /* PB12 */
+#define GPIO_CAN2_TX     (GPIO_CAN2_TX_1 | GPIO_SPEED_50MHz)    /* PB13 */
 /* SPI
  * SPI4 is sensors
  * SPI3 is FRAM
@@ -418,21 +403,14 @@
 
 #define ADJ_SLEW_RATE(p) (((p) & ~GPIO_SPEED_MASK) | (GPIO_SPEED_2MHz))
 
-// #define GPIO_SPI1_MISO   GPIO_SPI1_MISO_1               /* PA6  */
-// #define GPIO_SPI1_MOSI   GPIO_SPI1_MOSI_1               /* PA7  */
-// #define GPIO_SPI1_SCK    ADJ_SLEW_RATE(GPIO_SPI1_SCK_1) /* PA5  */
+#define GPIO_SPI3_MISO   (GPIO_SPI3_MISO_1 | GPIO_SPEED_50MHz)  /* PB4 */
+#define GPIO_SPI3_MOSI   (GPIO_SPI3_MOSI_4 | GPIO_SPEED_50MHz)  /* PB5 */
+#define GPIO_SPI3_SCK    ADJ_SLEW_RATE(GPIO_SPI3_SCK_1)         /* PB3 */
 
-// #define GPIO_SPI2_MISO   GPIO_SPI2_MISO_2               /* PC2  */
-// #define GPIO_SPI2_MOSI   GPIO_SPI2_MOSI_3               /* PC3  */
-// #define GPIO_SPI2_SCK    ADJ_SLEW_RATE(GPIO_SPI2_SCK_5) /* PD3  */
+#define GPIO_SPI4_MISO   (GPIO_SPI4_MISO_2 | GPIO_SPEED_50MHz)  /* PE5 */
+#define GPIO_SPI4_MOSI   (GPIO_SPI4_MOSI_2 | GPIO_SPEED_50MHz)  /* PE6 */
+#define GPIO_SPI4_SCK    ADJ_SLEW_RATE(GPIO_SPI4_SCK_2)         /* PE2 */
 
-#define GPIO_SPI3_MISO   GPIO_SPI3_MISO_1               /* PB4  */
-#define GPIO_SPI3_MOSI   GPIO_SPI3_MOSI_4               /* PB5  */
-#define GPIO_SPI3_SCK    ADJ_SLEW_RATE(GPIO_SPI3_SCK_1) /* PB3  */
-
-#define GPIO_SPI4_MISO   GPIO_SPI4_MISO_2               /* PE5  */
-#define GPIO_SPI4_MOSI   GPIO_SPI4_MOSI_2               /* PE6  */
-#define GPIO_SPI4_SCK    ADJ_SLEW_RATE(GPIO_SPI4_SCK_2) /* PE2  */
 /* I2C
  *
  *   The optional _GPIO configurations allow the I2C driver to manually
@@ -441,23 +419,6 @@
  *
  */
 
-// #define GPIO_I2C1_SCL GPIO_I2C1_SCL_2       /* PB8  */
-// #define GPIO_I2C1_SDA GPIO_I2C1_SDA_1       /* PB7  */
-
-// #define GPIO_I2C1_SCL_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN |GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN8)
-// #define GPIO_I2C1_SDA_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN |GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN7)
-
-// #define GPIO_I2C2_SCL GPIO_I2C2_SCL_1       /* PB10 */
-// #define GPIO_I2C2_SDA GPIO_I2C2_SDA_1       /* PB11*/
-
-// #define GPIO_I2C2_SCL_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN |GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN10)
-// #define GPIO_I2C2_SDA_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN |GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN11)
-
-// #define GPIO_I2C4_SCL GPIO_I2C4_SCL_1       /* PD12 */
-// #define GPIO_I2C4_SDA GPIO_I2C4_SDA_1       /* PD13 */
-
-// #define GPIO_I2C4_SCL_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN | GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTD | GPIO_PIN12)
-// #define GPIO_I2C4_SDA_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN | GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTD | GPIO_PIN13)
 
 /* SDMMC1
  *
@@ -468,12 +429,13 @@
  *      SDMMC1_D2                           PC10
  *      SDMMC1_D3                           PC11
  *
- * The SDMMC1 pin mappings are provided by the STM32H7 pinmap header:
- *   GPIO_SDMMC1_CK, GPIO_SDMMC1_CMD,
- *   GPIO_SDMMC1_D0, GPIO_SDMMC1_D1,
- *   GPIO_SDMMC1_D2, GPIO_SDMMC1_D3.
  */
-
+#define GPIO_SDMMC1_CK   GPIO_SDMMC1_CK_0                       /* PC12 */
+#define GPIO_SDMMC1_CMD  (GPIO_SDMMC1_CMD_0 | GPIO_SPEED_50MHz) /* PD2 */
+#define GPIO_SDMMC1_D0   (GPIO_SDMMC1_D0_0 | GPIO_SPEED_50MHz)  /* PC8 */
+#define GPIO_SDMMC1_D1   (GPIO_SDMMC1_D1_0 | GPIO_SPEED_50MHz)  /* PC9 */
+#define GPIO_SDMMC1_D2   (GPIO_SDMMC1_D2_0 | GPIO_SPEED_50MHz)  /* PC10 */
+#define GPIO_SDMMC1_D3   (GPIO_SDMMC1_D3_0 | GPIO_SPEED_50MHz)  /* PC11 */
 
 /* USB
  *
@@ -482,6 +444,9 @@
  *      VBUS                                PA9
  */
 
+#define GPIO_OTGFS_DM        (GPIO_OTGFS_DM_0 | GPIO_SPEED_100MHz)  /* PA11 */
+#define GPIO_OTGFS_DP        (GPIO_OTGFS_DP_0 | GPIO_SPEED_100MHz)  /* PA12 */
+#define GPIO_OTGFS_ID        (GPIO_OTGFS_ID_0 | GPIO_SPEED_100MHz)  /* PA10 */
 
 /* Board provides GPIO or other Hardware for signaling to timing analyzer */
 
