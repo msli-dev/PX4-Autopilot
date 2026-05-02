@@ -49,6 +49,7 @@
 # CONFIG_NSH_DISABLE_UMOUNT is not set
 # CONFIG_NSH_DISABLE_UNSET is not set
 # CONFIG_NSH_DISABLE_USLEEP is not set
+# CONFIG_STM32H7_USE_LEGACY_PINMAP is not set
 CONFIG_ARCH="arm"
 CONFIG_ARCH_BOARD_CUSTOM=y
 CONFIG_ARCH_BOARD_CUSTOM_DIR="../../../../boards/pogo/canfcu-mini/nuttx-config"
