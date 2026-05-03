@@ -129,4 +129,8 @@
         "yaml.schemas": {
                 "${workspaceFolder}/validation/module_schema.yaml": "${workspaceFolder}/src/modules/*/module.yaml"
         },
+        "clangd.path": "/usr/bin/clangd",
+        "clangd.arguments": [
+                "--compile-commands-dir=build/pogo_canfcu-mini_default"
+        ],
 }
