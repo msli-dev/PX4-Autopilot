@@ -191,6 +191,9 @@
 /* PWM input driver. Use FMU AUX5 pins attached to timer4 channel 3 */
 
 /* RC input: */
+#define GPIO_PWM_IN             GPIO_TIM4_CH4IN
+#define PWMIN_TIMER             4
+#define PWMIN_TIMER_CHANNEL     4
 
 #define SDIO_SLOTNO                    0  /* Only one slot */
 #define SDIO_MINOR                     0
