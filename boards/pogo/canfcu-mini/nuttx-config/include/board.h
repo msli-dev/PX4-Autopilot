@@ -384,6 +384,12 @@
 #define GPIO_UART8_RX    (GPIO_UART8_RX_1 | GPIO_SPEED_100MHz)  /* PE0 */
 #define GPIO_UART8_TX    (GPIO_UART8_TX_1 | GPIO_SPEED_100MHz)  /* PE1 */
 
+/* RC input
+ *
+ * PD15 TIM4_CH4
+ */
+#define GPIO_TIM4_CH4IN   (GPIO_ALT|GPIO_AF2|GPIO_SPEED_50MHz|GPIO_PULLDOWN|GPIO_PORTD|GPIO_PIN15)
+
 /* CAN
  *
  * CAN1 is routed to transceiver.
