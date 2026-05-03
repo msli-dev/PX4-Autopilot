@@ -294,7 +294,67 @@
                 "clear": false
             },
             "problemMatcher": []
-        }
+        },
+          {
+      "label": "PX4: clean and build CANFCU Mini",
+      "type": "shell",
+      "command": "rm -rf build/pogo_canfcu-mini_default && make pogo_canfcu-mini_default",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "clear": true
+      }
+    },
+     {
+      "label": "PX4: clean and build CANFCU Mini bootloader",
+      "type": "shell",
+      "command": "rm -rf build/pogo_canfcu-mini_bootloader && make pogo_canfcu-mini_bootloader",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "PX4: Flash CANFCU-mini ",
+      "type": "shell",
+      "command": "make pogo_canfcu-mini_default upload",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "clear": true
+      }
+    }
     ],
     "inputs": [
         {
@@ -306,5 +366,6 @@
             ],
             "default": "default"
         }
-    ]
+    ],
+
 }
