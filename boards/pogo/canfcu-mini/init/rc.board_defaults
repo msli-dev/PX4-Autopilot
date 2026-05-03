@@ -4,12 +4,13 @@
 #------------------------------------------------------------------------------
 
 
-param set-default UAVCAN_ENABLE 2
-
+param set-default UAVCAN_ENABLE 3
+param set-default UAVCAN_PUB_ARM 1
+param set-default UAVCAN_SUB_BAT 2
 param set-default UAVCAN_SUB_MAG 1
-param set-default SYS_HAS_MAG 1
-
 param set-default UAVCAN_SUB_BARO 1
-param set-default SYS_HAS_BARO 1
 
+param set-default SYS_HAS_MAG 1
+param set-default SYS_HAS_BARO 1
 param set_default CBRK_SUPPLY_CHK 894281
+param set-default BAT1_SOURCE 1
