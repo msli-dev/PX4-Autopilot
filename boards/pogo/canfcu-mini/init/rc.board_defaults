@@ -12,5 +12,5 @@ param set-default UAVCAN_SUB_BARO 1
 
 param set-default SYS_HAS_MAG 1
 param set-default SYS_HAS_BARO 1
-param set_default CBRK_SUPPLY_CHK 894281
+param set-default CBRK_SUPPLY_CHK 894281
 param set-default BAT1_SOURCE 1
