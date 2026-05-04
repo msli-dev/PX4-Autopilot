@@ -17,14 +17,11 @@
  * PWM6  TIM1_CH2  PE11
  * PWM7  TIM1_CH3  PE13
  * PWM8  TIM1_CH4  PE14
- *
- * TIM3_CH3  PB0   BUZZER_1  - driven by tone alarm driver
- * TIM4_CH4  PD15  RCIN      - driven by RC/PWM input driver
  */
 
 constexpr io_timers_t io_timers[MAX_IO_TIMERS] = {
-	initIOTimer(Timer::Timer2, DMA{DMA::Index1}),
-	initIOTimer(Timer::Timer1, DMA{DMA::Index1}),
+	initIOTimer(Timer::Timer2, DMA{DMA::Index2}),
+	initIOTimer(Timer::Timer1, DMA{DMA::Index1})
 };
 
 constexpr timer_io_channels_t timer_io_channels[MAX_TIMER_IO_CHANNELS] = {
