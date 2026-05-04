@@ -54,9 +54,9 @@ RC controllers will use different sticks for throttle and yaw [based on their mo
 
 Note that disarming in any altitude controlled mode is only possible after landing was detected. In manually piloted modes without altitude control Stabilized, Acro, Manual it's always possible to disarm using gestures or buttons also in flight.
 
-| Parameter                                                                                                | Description                                                                                                          |
-| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| <a id="MAN_ARM_GESTURE"></a>[MAN_ARM_GESTURE](../advanced_config/parameter_reference.md#MAN_ARM_GESTURE) | Enable arm/disarm stick guesture. `0`: Disabled, `1`: Enabled (default).                                             |
+| Parameter                                                                                                | Description                                                              |
+| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| <a id="MAN_ARM_GESTURE"></a>[MAN_ARM_GESTURE](../advanced_config/parameter_reference.md#MAN_ARM_GESTURE) | Enable arm/disarm stick guesture. `0`: Disabled, `1`: Enabled (default). |
 
 ## Arming Button/Switch {#arm_disarm_switch}
 
@@ -85,9 +85,9 @@ The switch can also be set as part of _QGroundControl_ [Flight Mode](../config/f
 By default vehicles will automatically disarm on landing, or if you take too long to take off after arming.
 The feature is configured using the following timeouts.
 
-| Parameter                                                                                                   | Description                                                                     |
-| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| <a id="COM_DISARM_LAND"></a>[COM_DISARM_LAND](../advanced_config/parameter_reference.md#COM_DISARM_LAND)    | Time-out for auto disarm after landing. Default: 2s (-1 to disable).            |
+| Parameter                                                                                                   | Description                                                                    |
+| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| <a id="COM_DISARM_LAND"></a>[COM_DISARM_LAND](../advanced_config/parameter_reference.md#COM_DISARM_LAND)    | Time-out for auto disarm after landing. Default: 2s (-1 to disable).           |
 | <a id="COM_DISARM_PRFLT"></a>[COM_DISARM_PRFLT](../advanced_config/parameter_reference.md#COM_DISARM_PRFLT) | Time-out for auto disarm if too slow to takeoff. Default: 10s (-1 to disable). |
 
 ## Auto-Arming on Boot
