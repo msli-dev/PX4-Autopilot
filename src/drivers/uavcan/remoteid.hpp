@@ -70,6 +70,9 @@ private:
 	TimerCbBinder;
 
 	static constexpr unsigned MAX_RATE_HZ = 1;
+	static constexpr int BASIC_ID_SOURCE_BOARD_GUID = 0;
+	static constexpr int BASIC_ID_SOURCE_MAVLINK = 1;
+
 	uavcan::TimerEventForwarder<TimerCbBinder> _timer;
 
 	void periodic_update(const uavcan::TimerEvent &);
@@ -106,4 +109,11 @@ private:
 	      void (UavcanRemoteIDController::*)(const uavcan::ReceivedDataStructure<dronecan::remoteid::ArmStatus> &) >;
 
 	uavcan::Subscriber<dronecan::remoteid::ArmStatus, ArmStatusBinder> _uavcan_sub_arm_status;
+
+	// Cached configuration (set during init, requires reboot to change)
+	int _odid_bid_src{0};
+
+	DEFINE_PARAMETERS(
+		(ParamInt<px4::params::ODID_BID_SRC>) _param_odid_bid_src
+	)
 };

@@ -53,6 +53,9 @@ UavcanRemoteIDController::UavcanRemoteIDController(uavcan::INode &node) :
 
 int UavcanRemoteIDController::init()
 {
+	// Cache the source of the basic ID
+	_odid_bid_src = static_cast<uint8_t>(_param_odid_bid_src.get());
+
 	// Setup timer and call back function for periodic updates
 	_timer.setCallback(TimerCbBinder(this, &UavcanRemoteIDController::periodic_update));
 	_timer.startPeriodic(uavcan::MonotonicDuration::fromMSec(1000 / MAX_RATE_HZ));
@@ -80,22 +83,50 @@ void UavcanRemoteIDController::periodic_update(const uavcan::TimerEvent &)
 
 void UavcanRemoteIDController::send_basic_id()
 {
-	open_drone_id_basic_id_s basic_id;
+	dronecan::remoteid::BasicID msg {};
+	// msg.id_or_mac // supposedly only used for drone ID data from other UAs
 
-	if (_open_drone_id_basic_id.copy(&basic_id)) {
+	switch (_odid_bid_src) {
+	case BASIC_ID_SOURCE_BOARD_GUID:
+	default: {
+			msg.id_type = dronecan::remoteid::BasicID::ODID_ID_TYPE_SERIAL_NUMBER;
+			msg.ua_type = static_cast<uint8_t>(open_drone_id_translations::odidTypeForMavType(_vehicle_status.get().system_type));
 
-		dronecan::remoteid::BasicID msg{};
-		// msg.id_or_mac // supposedly only used for drone ID data from other UAs
-		msg.id_type = basic_id.id_type;
-		msg.ua_type = basic_id.ua_type;
+			// uas_id: UAS (Unmanned Aircraft System) ID following the format specified by id_type
+			// TODO: MAV_ODID_ID_TYPE_SERIAL_NUMBER needs to be ANSI/CTA-2063 format
+			char uas_id[20] {};
+			board_get_px4_guid_formated(uas_id, sizeof(uas_id));
 
-		// uas_id: UAS (Unmanned Aircraft System) ID following the format specified by id_type
-		for (unsigned i = 0; i < sizeof(basic_id.uas_id); ++i) {
-			msg.uas_id.push_back(basic_id.uas_id[i]);
+			for (unsigned i = 0; i < sizeof(uas_id); ++i) {
+				msg.uas_id.push_back(uas_id[i]);
+			}
+
+			break;
 		}
 
-		_uavcan_pub_remoteid_basicid.broadcast(msg);
+	case BASIC_ID_SOURCE_MAVLINK: {
+			open_drone_id_basic_id_s basic_id {};
+
+			if (!_open_drone_id_basic_id.copy(&basic_id)) {
+				return;
+			}
+
+			msg.id_type = basic_id.id_type;
+			msg.ua_type = basic_id.ua_type;
+
+			using UasIdField = decltype(msg.uas_id);
+			static_assert(sizeof(basic_id.uas_id) == UasIdField::MaxSize, "OpenDroneID Basic ID uas_id size mismatch");
+
+			// uas_id: UAS (Unmanned Aircraft System) ID following the format specified by id_type
+			for (unsigned i = 0; i < UasIdField::MaxSize; ++i) {
+				msg.uas_id.push_back(basic_id.uas_id[i]);
+			}
+
+			break;
+		}
 	}
+
+	_uavcan_pub_remoteid_basicid.broadcast(msg);
 }
 
 void UavcanRemoteIDController::send_location()

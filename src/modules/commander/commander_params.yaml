@@ -776,3 +776,22 @@ parameters:
       max: 0.5
       decimal: 2
       increment: 0.01
+- group: Open Drone ID
+  definitions:
+    ODID_BID_SRC:
+      description:
+        short: Open Drone ID Basic ID source
+        long: |-
+          Selects the data source for Open Drone ID Basic ID messages.
+
+          0: Use the local board PX4 GUID as a serial number.
+          1: Use OPEN_DRONE_ID_BASIC_ID received via MAVLink.
+             If no valid MAVLink Basic ID has been received, no Basic ID is sent.
+      type: enum
+      values:
+        0: Board GUID
+        1: MAVLink
+      default: 0
+      min: 0
+      max: 1
+      reboot_required: true
