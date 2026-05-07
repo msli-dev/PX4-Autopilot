@@ -511,6 +511,16 @@ CONFIG:
       buildType: MinSizeRel
       settings:
         CONFIG: nxp_tropic-community_default
+    pogo_canfcu-mini_default:
+      short: pogo_canfcu-mini
+      buildType: MinSizeRel
+      settings:
+        CONFIG: pogo_canfcu-mini_default
+    pogo_canfcu-mini_bootloader:
+      short: pogo_canfcu-mini_bootloader
+      buildType: MinSizeRel
+      settings:
+        CONFIG: pogo_canfcu-mini_bootloader
     raspberrypi_pico_default:
       short: raspberrypi_pico
       buildType: MinSizeRel
