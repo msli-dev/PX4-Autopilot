@@ -42,6 +42,10 @@ then
 	mc_nn_control start
 fi
 
+if param compare -s MC_OVLD_EN 1
+then
+	mc_overload_detector start
+fi
 
 if param compare -s MC_RAPTOR_ENABLE 1
 then

@@ -1,0 +1,12 @@
+menuconfig MODULES_MC_OVERLOAD_DETECTOR
+	bool "mc_overload_detector"
+	default n
+	---help---
+		Enable support for mc_overload_detector"
+
+menuconfig USER_MC_OVERLOAD_DETECTOR
+	bool "mc_overload_detector running as userspace module"
+	default y
+	depends on BOARD_PROTECTED && MODULES_MC_OVERLOAD_DETECTOR
+	---help---
+		Put mc_overload_detector in userspace memory

@@ -1,0 +1,58 @@
+module_name: mc_overload_detector
+parameters:
+- group: Overload Detector
+  definitions:
+    MC_OVLD_EN:
+      description:
+        short: Enable multicopter overload detector
+      type: boolean
+      default: 1
+      reboot_required: true
+    MC_OVLD_THR:
+      description:
+        short: Overload thrust threshold
+      type: float
+      default: 0.85
+      min: 0.0
+      max: 1.0
+    MC_OVLD_LND_VZ:
+      description:
+        short: Overload landing descent speed
+      type: float
+      default: 0.5
+      min: 0.1
+      max: 2.0
+      unit: m/s
+    MC_OVLD_TILT:
+      description:
+        short: Maximum tilt angle during overload landing
+      type: float
+      default: 5.0
+      min: 3.0
+      max: 30.0
+      unit: deg
+    MC_OVLD_XY_VEL:
+      description:
+        short: Maximum horizontal velocity during overload landing
+      type: float
+      default: 0.5
+      min: 0.0
+      max: 3.0
+      unit: m/s
+    MC_OVLD_EL_EN:
+      description:
+        short: Enable overload emergency landing point
+      type: boolean
+      default: false
+    MC_OVLD_EL_X:
+      description:
+        short: Emergency landing local X position
+      type: float
+      default: 0.0
+      unit: m
+    MC_OVLD_EL_Y:
+      description:
+        short: Emergency landing local Y position
+      type: float
+      default: 0.0
+      unit: m

@@ -67,6 +67,7 @@
 #include <uORB/topics/vehicle_land_detected.h>
 #include <uORB/topics/vehicle_local_position.h>
 #include <uORB/topics/vehicle_local_position_setpoint.h>
+#include <uORB/topics/vehicle_overload_status.h>
 
 using namespace time_literals;
 
@@ -110,6 +111,17 @@ private:
 	uORB::Subscription _vehicle_constraints_sub{ORB_ID(vehicle_constraints)};
 	uORB::Subscription _vehicle_control_mode_sub{ORB_ID(vehicle_control_mode)};
 	uORB::Subscription _vehicle_land_detected_sub{ORB_ID(vehicle_land_detected)};
+	uORB::Subscription _overload_status_sub{ORB_ID(vehicle_overload_status)};
+
+	bool _ovld_landing_active{false};
+	bool _ovld_critical{false};
+	float _ovld_tilt_deg{.0f};
+	float _ovld_land_vz{.0f};
+	float _ovld_xy_vel{.0f};
+	bool _ovld_el_en{false};
+	float _ovld_el_x{.0f};
+	float _ovld_el_y{.0f};
+
 
 	hrt_abstime _time_stamp_last_loop{0};		/**< time stamp of last loop iteration */
 	hrt_abstime _time_position_control_enabled{0};
@@ -190,7 +202,14 @@ private:
 
 		(ParamFloat<px4::params::MPC_XY_ERR_MAX>) _param_mpc_xy_err_max,
 		(ParamFloat<px4::params::MPC_YAWRAUTO_MAX>) _param_mpc_yawrauto_max,
-		(ParamFloat<px4::params::MPC_YAWRAUTO_ACC>) _param_mpc_yawrauto_acc
+		(ParamFloat<px4::params::MPC_YAWRAUTO_ACC>) _param_mpc_yawrauto_acc,
+
+		(ParamFloat<px4::params::MC_OVLD_LND_VZ>) _param_mc_ovld_lnd_vz,
+		(ParamFloat<px4::params::MC_OVLD_TILT>) _param_mc_ovld_tilt,
+		(ParamFloat<px4::params::MC_OVLD_XY_VEL>) _param_mc_ovld_xy_vel,
+		(ParamBool<px4::params::MC_OVLD_EL_EN>) _param_mc_ovld_el_en,
+		(ParamFloat<px4::params::MC_OVLD_EL_X>) _param_mc_ovld_el_x,
+		(ParamFloat<px4::params::MC_OVLD_EL_Y>) _param_mc_ovld_el_y
 	);
 
 	math::WelfordMean<float> _sample_interval_s{};

@@ -306,6 +306,13 @@ void MulticopterPositionControl::parameters_update(bool force)
 		_takeoff.setSpoolupTime(_param_com_spoolup_time.get());
 		_takeoff.setTakeoffRampTime(_param_mpc_tko_ramp_t.get());
 		_takeoff.generateInitialRampValue(_param_mpc_z_vel_p_acc.get());
+
+		_ovld_tilt_deg = _param_mc_ovld_tilt.get();
+		_ovld_land_vz = _param_mc_ovld_lnd_vz.get();
+		_ovld_xy_vel = _param_mc_ovld_xy_vel.get();
+		_ovld_el_en = _param_mc_ovld_el_en.get();
+		_ovld_el_x = _param_mc_ovld_el_x.get();
+		_ovld_el_y = _param_mc_ovld_el_y.get();
 	}
 }
 
@@ -391,6 +398,17 @@ void MulticopterPositionControl::Run()
 	parameters_update(false);
 
 	perf_begin(_cycle_perf);
+
+	vehicle_overload_status_s overload_status{};
+
+	if (_overload_status_sub.update(&overload_status)) {
+		if (overload_status.overload) {
+			_ovld_landing_active = true;
+		}
+
+		_ovld_critical = overload_status.critical;
+	}
+
 	vehicle_local_position_s vehicle_local_position;
 
 	if (_local_pos_sub.update(&vehicle_local_position)) {
@@ -416,6 +434,11 @@ void MulticopterPositionControl::Run()
 		}
 
 		_vehicle_land_detected_sub.update(&_vehicle_land_detected);
+
+		if (_vehicle_land_detected.landed) {
+			_ovld_landing_active = false;
+			_ovld_critical = false;
+		}
 
 		if (_hover_thrust_estimate_sub.updated()) {
 			hover_thrust_estimate_s hte;
@@ -523,20 +546,82 @@ void MulticopterPositionControl::Run()
 			}
 
 			// limit tilt during takeoff ramupup
-			const float tilt_limit_deg = (_takeoff.getTakeoffState() < TakeoffState::flight)
-						     ? _param_mpc_tiltmax_lnd.get() : _param_mpc_tiltmax_air.get();
-			_control.setTiltLimit(_tilt_limit_slew_rate.update(math::radians(tilt_limit_deg), dt));
+			float tilt_limit_deg = (_takeoff.getTakeoffState() < TakeoffState::flight)
+					       ? _param_mpc_tiltmax_lnd.get() : _param_mpc_tiltmax_air.get();
 
-			const float speed_up = _takeoff.updateRamp(dt,
-					       PX4_ISFINITE(_vehicle_constraints.speed_up) ? _vehicle_constraints.speed_up : _param_mpc_z_vel_max_up.get());
-			const float speed_down = PX4_ISFINITE(_vehicle_constraints.speed_down) ? _vehicle_constraints.speed_down :
-						 _param_mpc_z_vel_max_dn.get();
+			float speed_up = _takeoff.updateRamp(dt,
+							     PX4_ISFINITE(_vehicle_constraints.speed_up) ? _vehicle_constraints.speed_up : _param_mpc_z_vel_max_up.get());
+			float speed_down = PX4_ISFINITE(_vehicle_constraints.speed_down) ? _vehicle_constraints.speed_down :
+					   _param_mpc_z_vel_max_dn.get();
+
+			float max_speed_xy = _param_mpc_xy_vel_max.get();
+
+			if (_ovld_landing_active && flying) {
+
+				// 限制最大倾角，降低吊载摆动，同时尽量保留垂向升力裕度
+				tilt_limit_deg = math::min(tilt_limit_deg, _ovld_tilt_deg);
+
+				// 限制水平速度，避免超载状态下大范围快速机动
+				max_speed_xy = math::min(max_speed_xy, _ovld_xy_vel);
+
+				speed_up = 0.0f;
+
+				// 限制最大下降速度，使超载降落过程尽量可控
+				speed_down = math::min(speed_down, _ovld_land_vz);
+
+				const bool use_emergency_landing_point =
+					_ovld_el_en
+					&& !_ovld_critical
+					&& vehicle_local_position.xy_valid
+					&& PX4_ISFINITE(vehicle_local_position.x)
+					&& PX4_ISFINITE(vehicle_local_position.y);
+
+				if (use_emergency_landing_point) {
+
+					// 配置了应急降落点，且当前不是严重超载：
+
+					_setpoint.position[0] = _ovld_el_x;
+					_setpoint.position[1] = _ovld_el_y;
+
+					_setpoint.velocity[0] = NAN;
+					_setpoint.velocity[1] = NAN;
+
+				} else {
+
+					// 没有配置应急降落点、当前位置无效，或者已经进入严重超载状态：
+					_setpoint.position[0] = NAN;
+					_setpoint.position[1] = NAN;
+
+					_setpoint.velocity[0] = 0.0f;
+					_setpoint.velocity[1] = 0.0f;
+
+
+					_control.resetIntegralXY();
+				}
+
+				_setpoint.position[2] = NAN;
+				_setpoint.velocity[2] = _ovld_land_vz;
+
+
+				_setpoint.acceleration[0] = NAN;
+				_setpoint.acceleration[1] = NAN;
+				_setpoint.acceleration[2] = NAN;
+
+
+				_setpoint.jerk[0] = NAN;
+				_setpoint.jerk[1] = NAN;
+				_setpoint.jerk[2] = NAN;
+
+
+				_setpoint.timestamp = vehicle_local_position.timestamp_sample;
+			}
+
+			_control.setTiltLimit(_tilt_limit_slew_rate.update(math::radians(tilt_limit_deg), dt));
 
 			// Allow ramping from zero thrust on takeoff
 			const float minimum_thrust = flying ? _param_mpc_thr_min.get() : 0.f;
 			_control.setThrustLimits(minimum_thrust, _param_mpc_thr_max.get());
 
-			float max_speed_xy = _param_mpc_xy_vel_max.get();
 
 			if (PX4_ISFINITE(vehicle_local_position.vxy_max)) {
 				max_speed_xy = math::min(max_speed_xy, vehicle_local_position.vxy_max);
