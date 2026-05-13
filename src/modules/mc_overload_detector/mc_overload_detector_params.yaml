@@ -5,12 +5,18 @@ parameters:
     MC_OVLD_EN:
       description:
         short: Enable multicopter overload detector
+        long: |-
+          Starts the multicopter overload detector at boot.
+          The detector publishes overload status for the multicopter position controller.
       type: boolean
       default: 1
       reboot_required: true
     MC_OVLD_THR:
       description:
         short: Overload thrust threshold
+        long: |-
+          Normalized collective thrust setpoint threshold used to detect overload.
+          Overload is detected when thrust stays above this threshold while the vehicle is descending.
       type: float
       default: 0.85
       min: 0.0
@@ -18,6 +24,9 @@ parameters:
     MC_OVLD_LND_VZ:
       description:
         short: Overload landing descent speed
+        long: |-
+          Maximum downward speed used by the position controller after overload is detected.
+          Positive values command descent in the local NED frame.
       type: float
       default: 0.5
       min: 0.1
@@ -26,6 +35,9 @@ parameters:
     MC_OVLD_TILT:
       description:
         short: Maximum tilt angle during overload landing
+        long: |-
+          Tilt limit applied while overload landing is active.
+          Lower values preserve vertical thrust margin and reduce suspended-load swing.
       type: float
       default: 5.0
       min: 3.0
@@ -34,6 +46,9 @@ parameters:
     MC_OVLD_XY_VEL:
       description:
         short: Maximum horizontal velocity during overload landing
+        long: |-
+          Horizontal velocity limit applied while overload landing is active.
+          This also limits motion toward the configured emergency landing point.
       type: float
       default: 0.5
       min: 0.0
@@ -42,17 +57,26 @@ parameters:
     MC_OVLD_EL_EN:
       description:
         short: Enable overload emergency landing point
+        long: |-
+          When enabled, non-critical overload landing tracks the configured local X/Y point.
+          Critical overload or invalid local position falls back to descending at the current position.
       type: boolean
       default: false
     MC_OVLD_EL_X:
       description:
         short: Emergency landing local X position
+        long: |-
+          Local NED X coordinate of the overload emergency landing point.
+          This coordinate is relative to the current local position origin.
       type: float
       default: 0.0
       unit: m
     MC_OVLD_EL_Y:
       description:
         short: Emergency landing local Y position
+        long: |-
+          Local NED Y coordinate of the overload emergency landing point.
+          This coordinate is relative to the current local position origin.
       type: float
       default: 0.0
       unit: m

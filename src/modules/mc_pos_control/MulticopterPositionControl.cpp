@@ -307,9 +307,9 @@ void MulticopterPositionControl::parameters_update(bool force)
 		_takeoff.setTakeoffRampTime(_param_mpc_tko_ramp_t.get());
 		_takeoff.generateInitialRampValue(_param_mpc_z_vel_p_acc.get());
 
-		_ovld_tilt_deg = _param_mc_ovld_tilt.get();
-		_ovld_land_vz = _param_mc_ovld_lnd_vz.get();
-		_ovld_xy_vel = _param_mc_ovld_xy_vel.get();
+		_ovld_tilt_deg = math::constrain(_param_mc_ovld_tilt.get(), 0.f, MAX_SAFE_TILT_DEG);
+		_ovld_land_vz = math::max(_param_mc_ovld_lnd_vz.get(), 0.f);
+		_ovld_xy_vel = math::max(_param_mc_ovld_xy_vel.get(), 0.f);
 		_ovld_el_en = _param_mc_ovld_el_en.get();
 		_ovld_el_x = _param_mc_ovld_el_x.get();
 		_ovld_el_y = _param_mc_ovld_el_y.get();
@@ -558,15 +558,10 @@ void MulticopterPositionControl::Run()
 
 			if (_ovld_landing_active && flying) {
 
-				// 限制最大倾角，降低吊载摆动，同时尽量保留垂向升力裕度
 				tilt_limit_deg = math::min(tilt_limit_deg, _ovld_tilt_deg);
-
-				// 限制水平速度，避免超载状态下大范围快速机动
 				max_speed_xy = math::min(max_speed_xy, _ovld_xy_vel);
 
 				speed_up = 0.0f;
-
-				// 限制最大下降速度，使超载降落过程尽量可控
 				speed_down = math::min(speed_down, _ovld_land_vz);
 
 				const bool use_emergency_landing_point =
@@ -574,11 +569,11 @@ void MulticopterPositionControl::Run()
 					&& !_ovld_critical
 					&& vehicle_local_position.xy_valid
 					&& PX4_ISFINITE(vehicle_local_position.x)
-					&& PX4_ISFINITE(vehicle_local_position.y);
+					&& PX4_ISFINITE(vehicle_local_position.y)
+					&& PX4_ISFINITE(_ovld_el_x)
+					&& PX4_ISFINITE(_ovld_el_y);
 
 				if (use_emergency_landing_point) {
-
-					// 配置了应急降落点，且当前不是严重超载：
 
 					_setpoint.position[0] = _ovld_el_x;
 					_setpoint.position[1] = _ovld_el_y;
@@ -588,7 +583,6 @@ void MulticopterPositionControl::Run()
 
 				} else {
 
-					// 没有配置应急降落点、当前位置无效，或者已经进入严重超载状态：
 					_setpoint.position[0] = NAN;
 					_setpoint.position[1] = NAN;
 
@@ -600,7 +594,7 @@ void MulticopterPositionControl::Run()
 				}
 
 				_setpoint.position[2] = NAN;
-				_setpoint.velocity[2] = _ovld_land_vz;
+				_setpoint.velocity[2] = speed_down;
 
 
 				_setpoint.acceleration[0] = NAN;

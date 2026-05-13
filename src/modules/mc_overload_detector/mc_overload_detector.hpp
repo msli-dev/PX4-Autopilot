@@ -64,9 +64,6 @@
 #include <uORB/topics/vehicle_land_detected.h>
 
 // Publications
-#include <uORB/topics/vehicle_command.h>
-// #include <uORB/topics/vehicle_control_mode.h>
-// #include <uORB/topics/arming_check_reply.h>
 
 using namespace time_literals; // For the 1_s in the subscription interval
 class MulticopterOverloadDetector : public ModuleBase, public ModuleParams,
@@ -97,7 +94,6 @@ private:
 	void Run() override;
 	// function
 	void parameters_updated();
-	void send_land_command();
 
 	// Subscriptions
 	uORB::SubscriptionInterval _parameter_update_sub{ORB_ID(parameter_update), 1_s};
@@ -107,14 +103,12 @@ private:
 
 
 	uORB::Publication<vehicle_overload_status_s> _vehicle_overload_status_pub{ORB_ID(vehicle_overload_status)};
-	uORB::Publication<vehicle_command_s> _vehicle_command_pub{ORB_ID(vehicle_command)};
 
 
 	// Variables
 	hrt_abstime _last_run_time{0};
 	float _overload_time_s{0.f};
 	float _ovld_thr{.0f};
-	bool _land_command_sent{false};
 	perf_counter_t _loop_perf; /**< loop duration performance counter */
 // 	hrt_abstime _last_run{0};
 	bool _overload_detected{false};

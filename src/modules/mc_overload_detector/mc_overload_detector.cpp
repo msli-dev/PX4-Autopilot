@@ -134,7 +134,6 @@ void MulticopterOverloadDetector::Run()
 
 	if (_land_detected_sub.update(&land_detected)) {
 		if (land_detected.landed) {
-			_land_command_sent = false;
 			_overload_time_s = 0.f;
 			_overload_detected = false;
 		}
@@ -167,11 +166,6 @@ void MulticopterOverloadDetector::Run()
 	_overload_detected = _overload_time_s > 3.0f;
 
 	const bool critical_overload = (_thrust_sp > 0.95f) && (_vertical_velocity > 0.5f);
-
-	if (_overload_detected && !_land_command_sent) {
-		send_land_command();
-	}
-
 	vehicle_overload_status_s overload_status{};
 	overload_status.timestamp = now;
 	overload_status.overload = _overload_detected;
@@ -183,33 +177,6 @@ void MulticopterOverloadDetector::Run()
 	_vehicle_overload_status_pub.publish(overload_status);
 
 	perf_end(_loop_perf);
-}
-
-void MulticopterOverloadDetector::send_land_command()
-{
-	if (_land_command_sent) {
-		return;
-	}
-
-	vehicle_command_s cmd{};
-	cmd.timestamp = hrt_absolute_time();
-	cmd.command = vehicle_command_s::VEHICLE_CMD_NAV_LAND;
-
-	// 使用当前位置/当前任务逻辑，不强行指定经纬度
-	cmd.param5 = NAN;
-	cmd.param6 = NAN;
-	cmd.param7 = NAN;
-
-	cmd.target_system = 1;
-	cmd.target_component = 1;
-	cmd.source_system = 1;
-	cmd.source_component = 1;
-	cmd.from_external = false;
-
-	_vehicle_command_pub.publish(cmd);
-
-	_land_command_sent = true;
-	PX4_WARN("overload detected, NAV_LAND command sent");
 }
 
 int MulticopterOverloadDetector::custom_command(int argc, char *argv[])
