@@ -283,9 +283,9 @@ board_init(void)
 #if !defined(BOARD_USB_VBUS_SENSE_DISABLED)
 	/* enable configured GPIO to sample VBUS */
 #  if defined(USE_VBUS_PULL_DOWN)
-	px4_arch_configgpio((GPIO_OTGFS_VBUS & GPIO_PUPD_MASK) | GPIO_PULLDOWN);
+	px4_arch_configgpio((GPIO_OTGFS_VBUS & ~GPIO_PUPD_MASK) | GPIO_PULLDOWN);
 #  else
-	px4_arch_configgpio((GPIO_OTGFS_VBUS & GPIO_PUPD_MASK) | GPIO_FLOAT);
+	px4_arch_configgpio((GPIO_OTGFS_VBUS & ~GPIO_PUPD_MASK) | GPIO_FLOAT);
 #  endif
 #endif
 #endif
